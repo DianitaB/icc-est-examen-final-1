@@ -1,5 +1,8 @@
+import java.nio.channels.Pipe.SourceChannel;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
 
@@ -7,10 +10,10 @@ import controllers.MaquinaController;
 import models.Maquina;
 
 public class App {
-    public static void main(String[] args) throws Exception {
-        List<Maquina> maquinas = crearMaquinas();
 
-    }
+    List<Maquina> maquinas = crearMaquinas();
+    MaquinaController controller = new MaquinaController();
+
 
     static List<Maquina> crearMaquinas() {
 
@@ -66,6 +69,34 @@ public class App {
                 new Maquina("Nodo6", "169.238.150.174", Arrays.asList(6, 14, 3)),
                 new Maquina("DB13", "71.248.50.86", Arrays.asList(17, 11, 12)));
         return maquinas;
-
     }
+    public void filtrarPorSubred(){
+    List<Maquina> maquinas = crearMaquinas();
+    Stack<Maquina> resultado = controller.filtrarPorSubred(maquinas, 100);
+    System.out.println(" -- Método A --");
+        for(Maquina  maqui : resultado){
+            System.out.println("Stack " + maqui);
+        }
+    }
+   public void ordenarPorSubred(){
+    List<Maquina> maquinas = crearMaquinas();
+    Stack<Maquina> pila = controller.filtrarPorSubred(maquinas, 150);
+    System.out.println(" -- Método A --");
+        for(Maquina  maqui : pila){
+            System.out.println("TreeSeet: " + maqui);
+        }
+   }
+   public void agruparPorRiesgo(){
+    List<Maquina> maquinas = crearMaquinas();
+    Map<Integer, Queue<Maquina>> resultado = controller.agruparPorRiesgo(maquinas);
+    System.out.println(" -- Método C --");
+        System.out.println("Mapa: " + resultado);
+   }
+   public void explotarGrupo(){
+     List<Maquina> maquinas = crearMaquinas();
+        Map<Integer, Queue<Maquina>> mapa = controller.agruparPorRiesgo(maquinas);
+        Stack<Maquina> resultado = controller.explotarGrupo(mapa);
+        System.out.println(" --Metodo D --");
+        System.out.println("Stack: " +resultado);
+   }
 }
